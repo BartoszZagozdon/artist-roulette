@@ -1,5 +1,7 @@
-import { FormEvent } from 'react';
+import React, { FormEvent } from 'react';
 import { styled } from 'styled-components';
+
+import { startSearch } from '../api/spotify';
 
 const HeaderContainer = styled.div`
   width: 80vw;
@@ -15,16 +17,10 @@ const CountInput = styled.input`
   background-color: #f4f9fd;
   color: black;
 
-  -moz-appearance: textfield;
-
-  ::-webkit-inner-spin-button,
-  ::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    opacity: 1;
-  }
+  text-align: center;
 `;
 
-export const Header = () => {
+export const Header: React.FC<{ setArtists: React.Dispatch<React.SetStateAction<[] | null>> }> = ({ setArtists }) => {
   const blockInvalidChar = (e: FormEvent<HTMLInputElement>) => {
     const keyboardEvent = e as React.KeyboardEvent<HTMLInputElement>;
     const key = keyboardEvent.key;
@@ -47,11 +43,26 @@ export const Header = () => {
     }
   };
 
+  const searchArtists = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log(e.currentTarget.count.value);
+
+    if (!e.currentTarget.count.value) {
+      alert('field cannot be empty');
+    } else {
+      startSearch().then((res) => setArtists(res));
+    }
+  };
+
   return (
     <HeaderContainer>
       <h1>Artist Roulette!</h1>
       <p>Select how many artists to display randomly and click the button!</p>
-      <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <form
+        onSubmit={(e) => searchArtists(e)}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      >
         <CountInput
           type="number"
           name="count"

@@ -5,7 +5,6 @@
 
   color-scheme: light dark;
   color: black;
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -21,6 +20,7 @@
 }
 
 body {
+  display: flex;
   background-color: #f4f9fd;
   min-width: 320px;
   min-height: 100vh;
