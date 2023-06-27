@@ -3,6 +3,8 @@ import { styled } from 'styled-components';
 
 import { startSearch } from '../api/spotify';
 
+import { headerParams } from '../types';
+
 const HeaderContainer = styled.div`
   width: 80vw;
   height: 20%;
@@ -20,7 +22,7 @@ const CountInput = styled.input`
   text-align: center;
 `;
 
-export const Header: React.FC<{ setArtists: React.Dispatch<React.SetStateAction<[] | null>> }> = ({ setArtists }) => {
+export const Header: React.FC<headerParams> = ({ setArtists, setCount, setIsLoading }) => {
   const blockInvalidChar = (e: FormEvent<HTMLInputElement>) => {
     const keyboardEvent = e as React.KeyboardEvent<HTMLInputElement>;
     const key = keyboardEvent.key;
@@ -36,22 +38,26 @@ export const Header: React.FC<{ setArtists: React.Dispatch<React.SetStateAction<
 
     console.log(value);
 
-    if (value > 100) {
-      e.currentTarget.value = '100';
+    if (value > 50) {
+      e.currentTarget.value = '50';
     } else if (value < 1) {
       e.currentTarget.value = '1';
     }
+
+    setCount(value);
   };
 
   const searchArtists = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(e.currentTarget.count.value);
-
     if (!e.currentTarget.count.value) {
       alert('field cannot be empty');
     } else {
-      startSearch().then((res) => setArtists(res));
+      setIsLoading(true);
+      startSearch(e.currentTarget.count.value).then((res) => {
+        setIsLoading(false);
+        setArtists(res);
+      });
     }
   };
 
@@ -61,18 +67,18 @@ export const Header: React.FC<{ setArtists: React.Dispatch<React.SetStateAction<
       <p>Select how many artists to display randomly and click the button!</p>
       <form
         onSubmit={(e) => searchArtists(e)}
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}
       >
         <CountInput
           type="number"
           name="count"
           min={1}
-          max={100}
+          max={50}
           defaultValue={1}
           onChange={controlValue}
           onKeyDown={blockInvalidChar}
         />
-        <button type="submit">Search</button>
+        <button type="submit">Search new artists</button>
       </form>
     </HeaderContainer>
   );

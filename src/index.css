@@ -25,3 +25,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+
+button {
+  cursor: pointer;
+  margin-top: 25px;
+}
