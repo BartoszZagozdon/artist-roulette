@@ -4,7 +4,6 @@ const client_secret = 'b286a9f61c344b79b96eaee2c58c3b68'; // secret
 const randomChar = () => {
   const characters = 'abcdefghijklmnopqrstuvwxyz';
   const result = characters.charAt(Math.floor(Math.random() * characters.length));
-  console.log(result);
   return result;
 };
 
@@ -34,7 +33,6 @@ export const startSearch = async (limit: number) => {
     })
     .catch((error) => console.error(error));
 
-  console.log(response);
   return response;
 };
 

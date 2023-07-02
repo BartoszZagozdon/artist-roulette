@@ -5,6 +5,8 @@ import { startSearch } from '../api/spotify';
 
 import { headerParams } from '../types';
 
+import { Button } from '../styled-components/Button';
+
 const HeaderContainer = styled.div`
   width: 80vw;
   height: 20%;
@@ -36,8 +38,6 @@ export const Header: React.FC<headerParams> = ({ setArtists, setCount, setIsLoad
   const controlValue = (e: FormEvent<HTMLInputElement>) => {
     const value = parseInt(e.currentTarget.value);
 
-    console.log(value);
-
     if (value > 50) {
       e.currentTarget.value = '50';
     } else if (value < 1) {
@@ -54,9 +54,13 @@ export const Header: React.FC<headerParams> = ({ setArtists, setCount, setIsLoad
       alert('field cannot be empty');
     } else {
       setIsLoading(true);
-      startSearch(e.currentTarget.count.value).then((res) => {
-        setIsLoading(false);
-        setArtists(res);
+      startSearch(e.currentTarget.count.value).then((res: [] | null) => {
+        if (!res || res.length === 0) {
+          searchArtists(e);
+        } else {
+          setIsLoading(false);
+          setArtists(res);
+        }
       });
     }
   };
@@ -78,7 +82,7 @@ export const Header: React.FC<headerParams> = ({ setArtists, setCount, setIsLoad
           onChange={controlValue}
           onKeyDown={blockInvalidChar}
         />
-        <button type="submit">Search new artists</button>
+        <Button type="submit">Search new artists</Button>
       </form>
     </HeaderContainer>
   );

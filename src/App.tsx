@@ -5,16 +5,16 @@ import { Header } from './components/Header';
 import { Artists } from './components/Artists';
 import { Loader } from './components/Loader';
 
+import { Button } from './styled-components/Button';
+
 import { startSearch } from './api/spotify';
 
 import { artistResponse } from './types';
 
 function App() {
   const [artists, setArtists] = useState<artistResponse[] | null>(null);
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(artists);
 
   return (
     <div>
@@ -23,7 +23,7 @@ function App() {
       {artists && (
         <>
           <Artists artists={artists} />
-          <button
+          <Button
             onClick={() => {
               setIsLoading(true);
               startSearch(count).then((res) => {
@@ -35,7 +35,7 @@ function App() {
             }}
           >
             Load {count} more
-          </button>
+          </Button>
         </>
       )}
       {isLoading && <Loader />}

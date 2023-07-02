@@ -15,7 +15,7 @@ const slideInFromBottom = keyframes`
 
 const CardContainer = styled.div`
   width: 80vw;
-  height: 250px;
+  min-height: 250px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -48,7 +48,9 @@ export const ArtistCard: React.FC<artist> = ({ url, followers, genres, img, name
   return (
     <CardContainer>
       <img width={200} height={200} src={img} />
-      <Link href={url}>{name}</Link>
+      <Link target="_blank" href={url}>
+        {name}
+      </Link>
       <Followers>
         Followers <span>{followers}</span>
       </Followers>
