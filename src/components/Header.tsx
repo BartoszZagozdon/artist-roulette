@@ -24,7 +24,7 @@ const CountInput = styled.input`
   text-align: center;
 `;
 
-export const Header: React.FC<headerParams> = ({ setArtists, setCount, setIsLoading }) => {
+export const Header: React.FC<headerParams> = ({ count, setArtists, setCount, setIsLoading }) => {
   const blockInvalidChar = (e: FormEvent<HTMLInputElement>) => {
     const keyboardEvent = e as React.KeyboardEvent<HTMLInputElement>;
     const key = keyboardEvent.key;
@@ -50,18 +50,22 @@ export const Header: React.FC<headerParams> = ({ setArtists, setCount, setIsLoad
   const searchArtists = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!e.currentTarget.count.value) {
+    console.log('trying...');
+
+    if (!count) {
       alert('field cannot be empty');
     } else {
       setIsLoading(true);
-      startSearch(e.currentTarget.count.value).then((res: [] | null) => {
-        if (!res || res.length === 0) {
-          searchArtists(e);
-        } else {
-          setIsLoading(false);
-          setArtists(res);
-        }
-      });
+      startSearch(count)
+        .then((res: [] | null) => {
+          if (!res || res.length === 0) {
+            searchArtists(e);
+          } else {
+            setIsLoading(false);
+            setArtists(res);
+          }
+        })
+        .catch((error) => console.error(error, 'err'));
     }
   };
 
@@ -76,6 +80,7 @@ export const Header: React.FC<headerParams> = ({ setArtists, setCount, setIsLoad
         <CountInput
           type="number"
           name="count"
+          id="count"
           min={1}
           max={50}
           defaultValue={1}

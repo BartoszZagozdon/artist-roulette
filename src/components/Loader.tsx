@@ -12,8 +12,9 @@ const spinAnimation = keyframes`
 const LoaderContainer = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   height: 60vh;
+  margin-top: 20px;
 `;
 
 const Spinner = styled.div`

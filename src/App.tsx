@@ -16,26 +16,29 @@ function App() {
   const [count, setCount] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
+  const searchMore = () => {
+    if (artists) {
+      console.log('trying...');
+      setIsLoading(true);
+      startSearch(count).then((res: [] | null) => {
+        if (!res || res.length === 0) {
+          searchMore();
+        } else {
+          setIsLoading(false);
+          setArtists([...artists, ...res]);
+        }
+      });
+    }
+  };
+
   return (
     <div>
-      <Header setArtists={setArtists} setCount={setCount} setIsLoading={setIsLoading} />
+      <Header count={count} setArtists={setArtists} setCount={setCount} setIsLoading={setIsLoading} />
 
       {artists && (
         <>
           <Artists artists={artists} />
-          <Button
-            onClick={() => {
-              setIsLoading(true);
-              startSearch(count).then((res) => {
-                if (res) {
-                  setIsLoading(false);
-                  setArtists([...artists, ...res]);
-                }
-              });
-            }}
-          >
-            Load {count} more
-          </Button>
+          {!isLoading && <Button onClick={searchMore}>Load {count} more</Button>}
         </>
       )}
       {isLoading && <Loader />}

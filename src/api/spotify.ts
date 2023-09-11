@@ -31,7 +31,7 @@ export const startSearch = async (limit: number) => {
     .then((data) => {
       response = getRandomResponse(data.access_token, limit);
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.error(error, 'huh'));
 
   return response;
 };

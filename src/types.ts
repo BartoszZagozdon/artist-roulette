@@ -18,4 +18,5 @@ export type headerParams = {
   setArtists: React.Dispatch<React.SetStateAction<artistResponse[] | null>>;
   setCount: React.Dispatch<React.SetStateAction<number>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  count: number;
 };
